@@ -3,10 +3,11 @@ import java.io.File;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -40,6 +41,18 @@ public class FileHandling{
 		return worksheet.getRow(rowNum).getCell(colNum).getStringCellValue();
 	}
 	
+	void setValue(int rowNum,int colNum,String value) throws IOException{
+		Row tmpRow = worksheet.createRow(rowNum);
+		Cell tmpCell = tmpRow.createCell(colNum);
+		tmpCell.setCellValue(value);	
+		fis.close();
+	}
+	
+	void saveFile() throws IOException{
+		FileOutputStream outputStream = new FileOutputStream(file);
+		this.workbook.write(outputStream);
+	}
+	
 	String getValue(int rowNum){
 		Row row = worksheet.getRow(rowNum);
 		String values="";
@@ -63,6 +76,9 @@ public class FileHandling{
 		System.out.println(files.getValue(1,2));
 		
 		System.out.println(files.getValue(1));
+		files.setValue(5,5,"testing");
+		files.saveFile();
+		System.out.println("File saved");
 		
 	}
 	
